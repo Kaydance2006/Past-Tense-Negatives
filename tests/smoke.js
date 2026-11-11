@@ -1,0 +1,20 @@
+const { chromium } = require('playwright');
+const path = require('path');
+const SHOTS = process.env.SHOTS || '/tmp/shots';
+(async () => {
+  const browser = await chromium.launch();
+  const page = await browser.newPage({ viewport: { width: 1100, height: 900 }, deviceScaleFactor: 1 });
+  const errors = [];
+  page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
+  page.on('pageerror', e => errors.push('PAGEERROR ' + e.message));
+  await page.goto('file://' + path.resolve(__dirname, '..', 'index.html'));
+  await page.waitForSelector('#nameinput');
+  await page.screenshot({ path: SHOTS + '/00-welcome.png' });
+  await page.fill('#nameinput', 'Kai');
+  await page.click('#savename');
+  await page.waitForSelector('.worlds');
+  await page.waitForTimeout(400);
+  await page.screenshot({ path: SHOTS + '/01-home.png' });
+  console.log('errors:', errors.length ? errors : 'none');
+  await browser.close();
+})();
