@@ -417,7 +417,10 @@
     if (!a) return;
     const act = a.dataset.act;
     if (act === 'next') next();
-    else if (act === 'quit') { if (S && S.active && !window.confirm('Leave this round?')) return; if (S) S.active = false; JP.Voice.stop(); hooks.hub && hooks.hub(S ? S.world : 'all'); }
+    else if (act === 'quit') {
+      const leave = function () { if (S) S.active = false; JP.Voice.stop(); hooks.hub && hooks.hub(S ? S.world : 'all'); };
+      if (S && S.active) UI.ask('Leave this round?', 'Leave', leave); else leave();
+    }
     else if (act === 'again') { hooks.again && hooks.again(S ? S.lastGame : 'adventure', S ? S.lastWorld : 'all'); }
     else if (act === 'hub') { hooks.hub && hooks.hub(S ? (S.lastWorld || S.world) : 'all'); }
     else if (act === 'home') { hooks.home && hooks.home(); }

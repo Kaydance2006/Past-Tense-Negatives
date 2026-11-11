@@ -440,6 +440,8 @@ input[type=range] { width: 150px; accent-color: var(--c1); }
 .bd { background: #fff6d6; border-radius: 16px; padding: 12px; text-align: center; }
 .bd.off { background: #eceffa; filter: grayscale(1); opacity: .6; }
 .bd .be { font-size: 2.4rem; } .bd b { display: block; } .bd small { color: var(--muted); }
+.modal.ask { max-width: 440px; text-align: center; }
+.ask-row { display: flex; gap: 12px; justify-content: center; margin-top: 16px; }
 /* kana chart */
 .kchart { display: flex; flex-direction: column; gap: 6px; }
 .krow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }

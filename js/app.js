@@ -199,7 +199,7 @@
       Store.get().name = v || 'ともだち'; Store.save(); JP.Audio.play('correct'); UI.closeModal(); UI.confetti(60, { emoji: ['🌸', '⭐'] });
       if (state.screen === 'home') home(); return;
     }
-    if (t.closest('#resetall')) { if (window.confirm('Erase all stickers, stars and badges on this device?')) { const keep = Store.get(); Store.reset(); UI.closeModal(); renderTopbar(); home(); welcome(true); } return; }
+    if (t.closest('#resetall')) { UI.ask('Erase all stickers, stars and badges on this device?', 'Erase everything', function () { Store.reset(); renderTopbar(); home(); welcome(true); }); return; }
   });
   document.addEventListener('input', function (e) {
     if (e.target.id === 'rate') { Store.set('rate', +e.target.value); }

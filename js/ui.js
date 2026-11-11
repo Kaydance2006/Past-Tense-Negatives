@@ -111,6 +111,17 @@
     if (ov._onClose) { const f = ov._onClose; ov._onClose = null; f(); }
   }
 
+  /* in-page yes/no question (the browser's confirm() is blocked in some hosts) */
+  let askYes = null;
+  function ask(message, yesLabel, onYes) {
+    askYes = onYes;
+    modal('<h2>' + esc(message) + '</h2><div class="ask-row"><button type="button" class="btn ghost" data-close="1">Cancel</button>' +
+      '<button type="button" class="btn warn" id="ask-yes">' + esc(yesLabel || 'Yes') + '</button></div>', { cls: 'ask' });
+  }
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('#ask-yes')) { const f = askYes; askYes = null; closeModal(); if (f) f(); }
+  });
+
   /* ---------- mascot cheers (phrases from the class phrase list) ---------- */
   const CHEER = [
     ['すごい！', 'sugoi', 'Wow, amazing!'], ['かんぺき！', 'kanpeki', 'Perfect!'], ['よかった！', 'yokatta', "I'm glad!"],
@@ -123,5 +134,5 @@
   ];
   function cheer(ok) { const c = U.pick(ok ? CHEER : OOPS); return { jp: c[0], ro: c[1], en: c[2] }; }
 
-  JP.UI = { $: $, $$: $$, K: K, KW: KW, KT: KT, tile: tile, sentenceHTML: sentenceHTML, speakBtn: speakBtn, toast: toast, confetti: confetti, modal: modal, closeModal: closeModal, cheer: cheer, colorOf: colorOf, ROLE_COLOR: ROLE_COLOR, ROLE_LABEL: ROLE_LABEL, esc: esc };
+  JP.UI = { $: $, $$: $$, K: K, KW: KW, KT: KT, tile: tile, sentenceHTML: sentenceHTML, speakBtn: speakBtn, toast: toast, confetti: confetti, modal: modal, closeModal: closeModal, ask: ask, cheer: cheer, colorOf: colorOf, ROLE_COLOR: ROLE_COLOR, ROLE_LABEL: ROLE_LABEL, esc: esc };
 })(globalThis.JP = globalThis.JP || {});
